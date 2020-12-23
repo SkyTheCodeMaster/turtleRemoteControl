@@ -1,44 +1,124 @@
-local tf = require("libraries.turtlefuncsremote")
+local queue = {}
+local channel = 27795
+local replyChannel = math.random(50000,60000)
 local modem = peripheral.find("modem")
+if modem == nil then error("Modem not found!") end
 
-local data = {
-  channel = 27795,
-  id = os.getComputerID()
-}
+local control = {}
 
-modem.open(data.channel)
+--[[
+  By default, calling these functions will add them to the queue, which is then sent to the specified turtle. 
+  If `true` is passed as the third argument, the command will be sent to the turtle immediately.
+]]
 
-local rtnTable,message,sender,reply = {},{},0,0
-
-while true do
-  repeat  _,_,sender,reply,message = os.pullEvent("modem_message")
-  until sender == data.channel and type(message) == "table" and message[1] == data.id
-
-  for i=1,#message-1 do
-    local cmd = message[i+1]
-    if cmd[1] == "forward" then
-      rtnTable[i] = {tf.forward(cmd[2])}
-    elseif cmd[1] == "back" then
-      rtnTable[i] = {tf.back(cmd[2])}
-    elseif cmd[1] == "turnRight" then
-      rtnTable[i] = {tf.turnRight(cmd[2])}
-    elseif cmd[1] == "turnLeft" then
-      rtnTable[i] = {tf.turnLeft(cmd[2])}
-    elseif cmd[1] == "up" then
-      rtnTable[i] = {tf.up(cmd[2])}
-    elseif cmd[1] == "down" then
-      rtnTable[i] = {tf.down(cmd[2])}
-    elseif cmd[1] == "strafeLeft" then
-      rtnTable[i] = {tf.strafeLeft(cmd[2])}
-    elseif cmd[1] == "strafeRight" then
-      rtnTable[i] = {tf.strafeRight(cmd[2])}
-    elseif cmd[1] == "turnAround" then
-      rtnTable[i] = {tf.turnAround(cmd[2])}
-    elseif cmd[1] == "uTurnLeft" then
-      rtnTable[i] = {tf.uTurnLeft(cmd[2])}
-    elseif cmd[1] == "uTurnRight" then
-      rtnTable[i] = {tf.uTurnRight(cmd[2])}    
-    end
-  end
-  modem.transmit(reply,sender,rtnTable)e
+control.sendQueue(id)
+  modem.transmit(channel,0,queue)
 end
+
+control.sendQueueAndWait(id)
+  modem.transmit(channel,replyChannel,queue)
+  local message
+  repeat _,_,sC,_,message = os.pullEvent("modem_message")
+  until sC == channel and type(message) == "table"
+  return message
+end
+
+control.forward(dist,id,now)
+  dist = dist or 1
+  if now then
+    modem.transmit(channel,0,{id,{"forward",dist}})
+  else
+    queue[#queue + 1] = {"forward",dist}
+  end
+end
+
+control.back(dist,id,now)
+  dist = dist or 1
+  if now then
+    modem.transmit(channel,0,{id,{"back",dist}})
+  else
+    queue[#queue + 1] = {"back",dist}
+  end
+end
+
+control.turnLeft(dist,id,now)
+  dist = dist or 1
+  if now then
+    modem.transmit(channel,0,{id,{"turnLeft",dist})
+  else
+    queue[#queue + 1] = {"turnLeft",dist}
+  end
+end
+
+control.turnRight(dist,id,now)
+  dist = dist or 1
+  if now then
+    modem.transmit(channel,0,{id,{"turnRight",dist}})
+  else
+    queue[#queue + 1] = {"turnRight",dist}
+  end
+end
+
+control.up(dist,id,now)
+  dist = dist or 1
+  if now then
+    modem.transmit(channel,0,{id,{"up",dist}})
+  else
+    queue[#queue + 1] = {"up",dist}
+  end
+end
+control.down(dist,id,now)
+  dist = dist or 1
+  if now then
+    modem.transmit(channel,0,{id,{id,{"down",dist}})
+  else
+    queue[#queue + 1] = {"down",dist}
+  end
+end
+
+control.strafeLeft(dist,id,now)
+  dist = dist or 1
+  if now then
+    modem.transmit(channel,0,{id,{"strafeLeft",dist}})
+  else
+    queue[#queue + 1] = {"strafeLeft",dist}
+  end
+end
+
+control.strafeRight(dist,id,now)
+  dist = dist or 1
+  if now then
+    modem.transmit(channel,0,{id,{"strafeRight",dist}})
+  else
+    queue[#queue + 1] = {"strafeRight",dist}
+  end
+end
+
+control.turnAround(dist,id,now)
+  dist = dist or 1
+  if now then
+    modem.transmit(channel,0,{id,{"turnAround",dist}})
+  else
+    queue[#queue + 1] = {"turnAround",dist}
+  end
+end
+
+control.uTurnLeft(dist,id,now)
+  dist = dist or 1
+  if now then
+    modem.transmit(channel,0,{id,{"uTurnLeft",dist}})
+  else
+    queue[#queue + 1] = {"uTurnLeft",dist}
+  end
+end
+
+control.uTurnRight(dist,id,now)
+  dist = dist or 1
+  if now then
+    modem.transmit(channel,0,{"uTurnRight",dist}})
+  else
+    queue[#queue + 1] = {"uTurnRight",dist}
+  end
+end
+
+return control
