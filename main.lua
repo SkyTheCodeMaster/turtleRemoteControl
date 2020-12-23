@@ -11,11 +11,11 @@ local control = {}
   If `true` is passed as the third argument, the command will be sent to the turtle immediately.
 ]]
 
-control.sendQueue(id)
+function control.sendQueue(id)
   modem.transmit(channel,0,queue)
 end
 
-control.sendQueueAndWait(id)
+function control.sendQueueAndWait(id)
   modem.transmit(channel,replyChannel,queue)
   local message
   repeat _,_,sC,_,message = os.pullEvent("modem_message")
@@ -23,7 +23,7 @@ control.sendQueueAndWait(id)
   return message
 end
 
-control.forward(dist,id,now)
+function control.forward(dist,id,now)
   dist = dist or 1
   if now then
     modem.transmit(channel,0,{id,{"forward",dist}})
@@ -32,7 +32,7 @@ control.forward(dist,id,now)
   end
 end
 
-control.back(dist,id,now)
+function control.back(dist,id,now)
   dist = dist or 1
   if now then
     modem.transmit(channel,0,{id,{"back",dist}})
@@ -41,7 +41,7 @@ control.back(dist,id,now)
   end
 end
 
-control.turnLeft(dist,id,now)
+function control.turnLeft(dist,id,now)
   dist = dist or 1
   if now then
     modem.transmit(channel,0,{id,{"turnLeft",dist})
@@ -50,7 +50,7 @@ control.turnLeft(dist,id,now)
   end
 end
 
-control.turnRight(dist,id,now)
+function control.turnRight(dist,id,now)
   dist = dist or 1
   if now then
     modem.transmit(channel,0,{id,{"turnRight",dist}})
@@ -59,7 +59,7 @@ control.turnRight(dist,id,now)
   end
 end
 
-control.up(dist,id,now)
+function control.up(dist,id,now)
   dist = dist or 1
   if now then
     modem.transmit(channel,0,{id,{"up",dist}})
@@ -67,7 +67,8 @@ control.up(dist,id,now)
     queue[#queue + 1] = {"up",dist}
   end
 end
-control.down(dist,id,now)
+  
+function control.down(dist,id,now)
   dist = dist or 1
   if now then
     modem.transmit(channel,0,{id,{id,{"down",dist}})
@@ -76,7 +77,7 @@ control.down(dist,id,now)
   end
 end
 
-control.strafeLeft(dist,id,now)
+function control.strafeLeft(dist,id,now)
   dist = dist or 1
   if now then
     modem.transmit(channel,0,{id,{"strafeLeft",dist}})
@@ -85,7 +86,7 @@ control.strafeLeft(dist,id,now)
   end
 end
 
-control.strafeRight(dist,id,now)
+function control.strafeRight(dist,id,now)
   dist = dist or 1
   if now then
     modem.transmit(channel,0,{id,{"strafeRight",dist}})
@@ -94,7 +95,7 @@ control.strafeRight(dist,id,now)
   end
 end
 
-control.turnAround(dist,id,now)
+function control.turnAround(dist,id,now)
   dist = dist or 1
   if now then
     modem.transmit(channel,0,{id,{"turnAround",dist}})
@@ -103,7 +104,7 @@ control.turnAround(dist,id,now)
   end
 end
 
-control.uTurnLeft(dist,id,now)
+function control.uTurnLeft(dist,id,now)
   dist = dist or 1
   if now then
     modem.transmit(channel,0,{id,{"uTurnLeft",dist}})
@@ -112,7 +113,7 @@ control.uTurnLeft(dist,id,now)
   end
 end
 
-control.uTurnRight(dist,id,now)
+function control.uTurnRight(dist,id,now)
   dist = dist or 1
   if now then
     modem.transmit(channel,0,{"uTurnRight",dist}})
