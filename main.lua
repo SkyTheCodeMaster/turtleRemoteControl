@@ -1,4 +1,4 @@
-local tf = require("libraries.turtlefuncs")
+local tf = require("libraries.turtlefuncsremote")
 local modem = peripheral.find("modem")
 
 local data = {
