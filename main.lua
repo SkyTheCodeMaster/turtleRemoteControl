@@ -71,7 +71,7 @@ end
 function control.down(dist,id,now)
   dist = dist or 1
   if now then
-    modem.transmit(channel,0,{id,{id,{"down",dist}})
+    modem.transmit(channel,0,{id,{"down",dist}})
   else
     queue[#queue + 1] = {"down",dist}
   end
