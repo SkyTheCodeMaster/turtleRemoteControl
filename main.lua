@@ -44,7 +44,7 @@ end
 function control.turnLeft(dist,id,now)
   dist = dist or 1
   if now then
-    modem.transmit(channel,0,{id,{"turnLeft",dist})
+    modem.transmit(channel,0,{id,{"turnLeft",dist}})
   else
     queue[#queue + 1] = {"turnLeft",dist}
   end
