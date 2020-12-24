@@ -12,11 +12,15 @@ local control = {}
 ]]
 
 function control.sendQueue(id)
-  modem.transmit(channel,0,queue)
+  modem.transmit(channel,0,{id,queue})
+end
+
+function control.deleteQueue()
+  queue = nil
 end
 
 function control.sendQueueAndWait(id)
-  modem.transmit(channel,replyChannel,queue)
+  modem.transmit(channel,replyChannel,{id,queue)
   local message
   repeat _,_,sC,_,message = os.pullEvent("modem_message")
   until sC == channel and type(message) == "table"
@@ -116,7 +120,7 @@ end
 function control.uTurnRight(dist,id,now)
   dist = dist or 1
   if now then
-    modem.transmit(channel,0,{"uTurnRight",dist}})
+    modem.transmit(channel,0,{id,{"uTurnRight",dist}})
   else
     queue[#queue + 1] = {"uTurnRight",dist}
   end
