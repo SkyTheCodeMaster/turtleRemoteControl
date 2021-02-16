@@ -14,8 +14,8 @@ while true do
   repeat  _,_,sender,reply,message = os.pullEvent("modem_message")
   until sender == data.channel and type(message) == "table" and message[1] == data.id
 
-  for i=1,#message-1 do
-    local cmd = message[i+1]
+  for i=2,#message-1 do
+    local cmd = message[i]
     if cmd[1] == "forward" then
       rtnTable[i] = {tf.forward(cmd[2])}
     elseif cmd[1] == "back" then
